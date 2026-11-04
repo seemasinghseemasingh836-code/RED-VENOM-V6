@@ -22,9 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Verify Java
-        run: |
-          java -version
-          echo "JAVA_HOME=$JAVA_HOME"
+        run: java -version
 
       - name: Install system dependencies
         run: |
@@ -41,9 +39,12 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
+        with:
+          accept-android-sdk-licenses: true
 
       - name: Install Android SDK packages
         run: |
+          yes | sdkmanager --licenses || true
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Install Buildozer
@@ -52,7 +53,7 @@ jobs:
           python -m pip install buildozer cython==0.29.36
 
       - name: Build APK
-        run: buildozer android debug
+        run: yes | buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
