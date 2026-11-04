@@ -1,0 +1,33 @@
+
+name: RED VENOM V6 Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'main.py'
+      - 'buildozer.spec'
+      - '.github/workflows/android.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Build Android APK
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+          python_version: 3.11
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RED-VENOM-V6-APK
+          path: bin/*.apk
+          if-no-files-found: error
+          
