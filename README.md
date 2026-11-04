@@ -1,10 +1,7 @@
-cd ~/RED_VENOM_V6
-
-cat > README.md <<'EOF'
-# 🔴 RED VENOM V6
+# RED VENOM V6
 ## Ultimate Android Gaming Hub
 
-A black and red themed Android gaming utility.
+Black and red themed Android gaming utility.
 
 ### Features
 - CPU Information
@@ -17,11 +14,3 @@ A black and red themed Android gaming utility.
 
 ### Platform
 Android | Termux | Python
-
-### Project
-RED VENOM V6
-EOF
-
-git add README.md
-git commit -m "Add project README"
-git push
