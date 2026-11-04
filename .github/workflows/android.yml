@@ -4,25 +4,40 @@ name: RED VENOM V6 Android APK
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'main.py'
-      - 'buildozer.spec'
-      - '.github/workflows/android.yml'
+    branches:
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Build Android APK
-        uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk \
+            autoconf libtool pkg-config \
+            zlib1g-dev libncurses5-dev \
+            libncursesw5-dev libtinfo6 \
+            cmake libffi-dev libssl-dev
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          command: buildozer android debug
-          buildozer_version: stable
-          python_version: 3.11
+          python-version: '3.11'
+
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install buildozer cython==0.29.36
+
+      - name: Build APK
+        run: |
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
